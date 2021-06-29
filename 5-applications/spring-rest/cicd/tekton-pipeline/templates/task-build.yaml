@@ -77,13 +77,15 @@ spec:
       - /workspace/source/Dockerfile
       - /workspace/source/upload
 
-  
   - name: new-version
     image: clamer/kikd:1.0.3
     imagePullPolicy: IfNotPresent
     workingDir: /workspace/source
     script: |
-      cp -r /tekton/home/.ssh /root/ && \
+      eval $(ssh-agent)
+      ssh-add /tekton/home/.ssh/id_*
+      git config --global user.email "tekton@tekton.dev"
+      git config --global user.name "Tekton Pipeline"
       git fetch --tags && jx-release-version > /workspace/output-area/version
 
   - name: tag-git-repo
@@ -106,8 +108,6 @@ spec:
     volumeMounts:
     - name: varlibcontainers
       mountPath: /var/lib/containers
-    securityContext:
-      privileged: true
 
   - name: image-push
     image: $(inputs.params.BUILDER_IMAGE)
@@ -119,17 +119,17 @@ spec:
     volumeMounts:
     - name: varlibcontainers
       mountPath: /var/lib/containers
-    securityContext:
-      privileged: true
 
   - name: push-git-tag
     image: clamer/kikd:1.0.3
     imagePullPolicy: IfNotPresent
     workingDir: /workspace/source
-    command: ["/bin/bash"]
-    args:
-      - -c
-      - "cp -r /tekton/home/.ssh /root/ && git push origin --tags"
+    script: |
+      eval $(ssh-agent)
+      ssh-add /tekton/home/.ssh/id_*
+      git config --global user.email "tekton@tekton.dev"
+      git config --global user.name "Tekton Pipeline"
+      git push origin --tags
 
   volumes:
 {{- if .Values.sonar.enabled }}
