@@ -16,9 +16,9 @@ fullnameOverride: "basic-spring-boot"
 serviceAccount:
   name: pipeline-with-keys
 
-imagestream:
-  name: redhat-openjdk18-openshift:1.5
-  namespace: openshift
+# imagestream:
+#   name: redhat-openjdk18-openshift:1.5
+#   namespace: openshift
 
 deploy:
   namespace:
