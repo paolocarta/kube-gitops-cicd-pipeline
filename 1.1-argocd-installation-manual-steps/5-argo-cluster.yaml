@@ -30,7 +30,7 @@ spec:
     scopes: '[groups]'
   applicationInstanceLabelKey: paolocarta.me/argoapp
   # repositories: |
-  #   - url: https://github.com/paolocarta/ocp-gitops-cicd-pipeline.git
+  #   - url: https://github.com/paolocarta/kube-gitops-cicd-pipeline.git
   # resourceExclusions: |
   #   - apiGroups:
   #     - tekton.dev

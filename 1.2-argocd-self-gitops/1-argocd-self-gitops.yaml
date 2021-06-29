@@ -10,7 +10,7 @@ spec:
   project: bootstrap
   source:
     path: 1.1-argocd-installation-manual-steps
-    repoURL: https://github.com/paolocarta/ocp-gitops-cicd-pipeline.git
+    repoURL: https://github.com/paolocarta/kube-gitops-cicd-pipeline.git
     targetRevision: master
   syncPolicy:
     automated:

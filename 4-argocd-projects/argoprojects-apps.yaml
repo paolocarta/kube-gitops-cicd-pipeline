@@ -12,7 +12,7 @@ spec:
     - namespace: '*'
       server: '*'
   sourceRepos:
-  - https://github.com/paolocarta/ocp-gitops-cicd-pipeline.git
+  - https://github.com/paolocarta/kube-gitops-cicd-pipeline.git
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -33,7 +33,7 @@ spec:
       - name: deploy.namespace.prefix
         value: developerteam1
     path: 5-applications/spring-rest/cicd/tekton-pipeline
-    repoURL: https://github.com/paolocarta/ocp-gitops-cicd-pipeline.git
+    repoURL: https://github.com/paolocarta/kube-gitops-cicd-pipeline.git
     targetRevision: master
   ignoreDifferences:
   - group: tekton.dev
@@ -67,7 +67,7 @@ spec:
   project: developerteam1
   source:
     path: 5-applications/spring-rest/manifests/overlays/stage
-    repoURL: https://github.com/paolocarta/ocp-gitops-cicd-pipeline.git
+    repoURL: https://github.com/paolocarta/kube-gitops-cicd-pipeline.git
     targetRevision: master
   # syncPolicy:
   #   automated:
@@ -86,7 +86,7 @@ spec:
   project: developerteam1
   source:
     path: 5-applications/spring-rest/manifests/overlays/prod
-    repoURL: https://github.com/paolocarta/ocp-gitops-cicd-pipeline.git
+    repoURL: https://github.com/paolocarta/kube-gitops-cicd-pipeline.git
     targetRevision: master
   syncPolicy:
     automated:
