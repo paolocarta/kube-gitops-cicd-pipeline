@@ -1,1 +1,11 @@
+
+
+kubectl apply -k argocd-operator/deploy/
+k apply -f 1.1/5-argo-cluster.yaml
+
+kubectl apply --filename https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
+kubectl apply --filename https://storage.googleapis.com/tekton-releases/triggers/latest/release.yaml
+
 oc create secret generic tekton-pipe-ssh-key --from-file=git-private-key=ssh/git-private-key
+
+
