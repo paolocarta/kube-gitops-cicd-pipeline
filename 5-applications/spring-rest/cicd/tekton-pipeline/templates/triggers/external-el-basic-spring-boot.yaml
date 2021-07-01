@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/managed-by: EventListener
+    app.kubernetes.io/part-of: Triggers
+    eventlistener: basic-spring-boot-el
+    paolocarta.me/argoapp: tekton-pipeline-spring-rest-devteam1
+  name: external-el-basic-spring-boot
+  namespace: developerteam1-cicd
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app.kubernetes.io/managed-by: EventListener
+    app.kubernetes.io/part-of: Triggers
+    eventlistener: basic-spring-boot-el
+  type: LoadBalancer
