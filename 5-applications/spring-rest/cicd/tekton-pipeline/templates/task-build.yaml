@@ -112,7 +112,7 @@ spec:
       - --dockerfile=$(params.dockerfilePath)
       - --context=$(params.kanikoContextPath)
         # - --destination=$(resources.outputs.image.url)
-      - --destination=$(params.imageRef):1.2.27
+      - --destination=$(params.imageRef):1.2.28
     volumeMounts:
       - name: gcr-creds
         mountPath: /secret
