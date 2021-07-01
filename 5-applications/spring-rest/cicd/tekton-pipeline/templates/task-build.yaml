@@ -97,8 +97,8 @@ spec:
     workingDir: /workspace/source
     command: ["/bin/bash"]
     args:
-      - "-c"
-      - "git tag $(cat /workspace/output-area/version)"
+      - -c
+      - git tag $(cat /workspace/output-area/version)
      
   - name: build-and-push
     image: $(params.kanikoImage)
