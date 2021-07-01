@@ -111,15 +111,11 @@ spec:
       - --dockerfile=$(params.dockerfilePath)
       - --context=$(params.kanikoContextPath)
         # - --destination=$(resources.outputs.image.url)
-      - --destination=$(params.imageRef)
+      - --destination=$(params.imageRef):$(cat /workspace/output-area/version)
 
         # TODO under verification
         # - --skip-tls-verify
         # - --skip-tls-verify-pull
-        # - --use-new-run
-
-      # securityContext:
-      #   runAsUser: 0
     volumeMounts:
       - name: gcr-creds
         mountPath: /secret
@@ -133,6 +129,7 @@ spec:
       # ssh-add /tekton/home/.ssh/id_*
       # git config --global user.email "tekton@tekton.dev"
       # git config --global user.name "Tekton Pipeline"
+      cp -r /tekton/home/.ssh /root/.ssh
       git push origin --tags
 
   volumes:
