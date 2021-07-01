@@ -1,7 +1,8 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: basic-spring-boot-first-pipe-run
+  generateName: basic-spring-boot-pipe-
+  # name: basic-spring-boot-first-pipe-run
   namespace: developerteam1-cicd
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous

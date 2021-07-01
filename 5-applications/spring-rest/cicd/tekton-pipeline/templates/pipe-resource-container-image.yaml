@@ -6,4 +6,4 @@ spec:
   type: image
   params:
   - name: url
-    value: image-registry.openshift-image-registry.svc:5000/{{ .Release.Namespace }}/{{ include "springboot-tekton.fullname" . }}
+    value: eu.gcr.io/kube-bootcamp-pc/{{ include "springboot-tekton.fullname" . }}
