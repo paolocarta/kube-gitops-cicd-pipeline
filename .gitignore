@@ -12,3 +12,7 @@ ssh/git-private-key
 argocd-crd.yaml
 
 2.1-users-groups/tektonbot-token
+
+gcr-creds.yml
+
+github-key.yaml

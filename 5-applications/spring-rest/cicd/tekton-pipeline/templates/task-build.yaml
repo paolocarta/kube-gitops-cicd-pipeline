@@ -15,28 +15,31 @@ spec:
         - -DskipTests
       description: The Maven goals to run
       type: array
-    - name: BUILDER_IMAGE
-      default: 'quay.io/buildah/stable:v1.14.8'
-      description: The location of the buildah builder image.
+    - name: kanikoImage
+      description: "Kaniko image"
       type: string
-    - name: DOCKERFILE
+      default: "gcr.io/kaniko-project/executor:v1.5.2@sha256:e61c08a27311884ff0d39a3ed4467f3c23444d73e03387fc9c7d5c6442796bae"
+    - name: kanikoBuildArgs
+      description: "Kaniko build arguments (default: none)"
+      # type: array
+      # default: []
+      type: string
+      default: ""
+    - name: kanikoContextPath
+      description: "Build context used by kaniko (default: ./, see https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)"
+      type: string
+      default: ./
+      # default: $(resources.inputs.git.path) # if "workingDir" inside steps not specified
+    - name: dockerfilePath
+      description: "Path to the Dockerfile (default: ./Dockerfile)"
+      type: string
       default: ./Dockerfile
-      description: Path to the Dockerfile to build.
+      # default: $(resources.inputs.git.path)/Dockerfile # if "workingDir" inside steps not specified
+    # if output resource not specified
+    - name: imageRef
+      description: "Reference (name) of the image to build"
       type: string
-    - name: CONTEXT
-      default: .
-      description: Path to the directory to use as context.
-      type: string
-    - name: TLSVERIFY
-      default: 'false'
-      description: >-
-        Verify the TLS on the registry endpoint (for push/pull to a non-TLS
-        registry)
-      type: string
-    - name: FORMAT 
-      default: oci
-      description: 'The format of the built container, oci or docker'
-      type: string
+      default: eu.gcr.io/kube-bootcamp-pc/basic-spring-boot
 
   resources:
     inputs:
@@ -82,10 +85,8 @@ spec:
     imagePullPolicy: IfNotPresent
     workingDir: /workspace/source
     script: |
-      eval $(ssh-agent)
-      ssh-add /tekton/home/.ssh/id_*
-      git config --global user.email "tekton@tekton.dev"
-      git config --global user.name "Tekton Pipeline"
+      cp -r /tekton/home/.ssh /root/.ssh
+      jx-release-version
       git fetch --tags && jx-release-version > /workspace/output-area/version
 
   - name: tag-git-repo
@@ -96,39 +97,42 @@ spec:
     args:
       - "-c"
       - "git tag $(cat /workspace/output-area/version)"
+     
+  - name: build-and-push
+    image: $(params.kanikoImage)
+    workingDir: $(resources.inputs.source.path)
+    env:
+      - name: GOOGLE_APPLICATION_CREDENTIALS
+        value: /secret/kaniko-secret.json
+    command:
+      - /kaniko/executor
+    args:
+      - $(params.kanikoBuildArgs)
+      - --dockerfile=$(params.dockerfilePath)
+      - --context=$(params.kanikoContextPath)
+        # - --destination=$(resources.outputs.image.url)
+      - --destination=$(params.imageRef)
 
-  - name: build-image
-    image: $(inputs.params.BUILDER_IMAGE)
-    workingDir: /workspace/source/upload
-    script: |
-      buildah bud --format=$(inputs.params.FORMAT) \
-      --tls-verify=$(inputs.params.TLSVERIFY) --layers \
-      -f "$(inputs.params.DOCKERFILE)" -t "$(outputs.resources.image.url)":"$(cat /workspace/output-area/version)" \
-      "$(inputs.params.CONTEXT)"
-    volumeMounts:
-    - name: varlibcontainers
-      mountPath: /var/lib/containers
+        # TODO under verification
+        # - --skip-tls-verify
+        # - --skip-tls-verify-pull
+        # - --use-new-run
 
-  - name: image-push
-    image: $(inputs.params.BUILDER_IMAGE)
-    workingDir: /workspace/source
-    script: |
-      buildah push --tls-verify=$(inputs.params.TLSVERIFY) \
-      "$(outputs.resources.image.url)":"$(cat /workspace/output-area/version)" \
-      "docker://$(outputs.resources.image.url)":"$(cat /workspace/output-area/version)"
+      # securityContext:
+      #   runAsUser: 0
     volumeMounts:
-    - name: varlibcontainers
-      mountPath: /var/lib/containers
+      - name: gcr-creds
+        mountPath: /secret
 
   - name: push-git-tag
     image: clamer/kikd:1.0.3
     imagePullPolicy: IfNotPresent
     workingDir: /workspace/source
     script: |
-      eval $(ssh-agent)
-      ssh-add /tekton/home/.ssh/id_*
-      git config --global user.email "tekton@tekton.dev"
-      git config --global user.name "Tekton Pipeline"
+      # eval $(ssh-agent)
+      # ssh-add /tekton/home/.ssh/id_*
+      # git config --global user.email "tekton@tekton.dev"
+      # git config --global user.name "Tekton Pipeline"
       git push origin --tags
 
   volumes:
@@ -137,6 +141,6 @@ spec:
     configMap:
       name: "$(inputs.params.CFGNAME)"
 {{- end }}
-  - name: varlibcontainers
-    persistentVolumeClaim:
-      claimName: container-layers-spring-rest
+    - name: gcr-creds
+      secret:
+        secretName: gcr-creds
