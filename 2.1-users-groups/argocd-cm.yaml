@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
+    app.kubernetes.io/managed-by: demolab-argocd
     app.kubernetes.io/name: argocd-cm
     app.kubernetes.io/part-of: argocd
   name: argocd-cm
@@ -9,3 +10,19 @@ metadata:
 data:
   accounts.tektonbot: apiKey,login
   accounts.tektonbot.enabled: "true"
+  admin.enabled: "true"
+  application.instanceLabelKey: paolocarta.me/argoapp
+  configManagementPlugins: ""
+  dex.config: ""
+  ga.anonymizeusers: "false"
+  ga.trackingid: ""
+  help.chatText: ""
+  help.chatUrl: ""
+  kustomize.buildOptions: ""
+  repositories: ""
+  repository.credentials: ""
+  resource.exclusions: ""
+  resource.inclusions: ""
+  statusbadge.enabled: "false"
+  url: https://demolab-argocd-server
+  users.anonymous.enabled: "true"
