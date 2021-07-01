@@ -87,7 +87,9 @@ spec:
     script: |
       cp -r /tekton/home/.ssh /root/.ssh
       jx-release-version
+      VERSION=$(jx-release-version)
       git fetch --tags && jx-release-version > /workspace/output-area/version
+
 
   - name: tag-git-repo
     image: clamer/kikd:1.0.3
@@ -107,15 +109,10 @@ spec:
     command:
       - /kaniko/executor
     args:
-      - $(params.kanikoBuildArgs)
       - --dockerfile=$(params.dockerfilePath)
       - --context=$(params.kanikoContextPath)
         # - --destination=$(resources.outputs.image.url)
-      - --destination=$(params.imageRef):$(cat /workspace/output-area/version)
-
-        # TODO under verification
-        # - --skip-tls-verify
-        # - --skip-tls-verify-pull
+      - --destination=$(params.imageRef):1.2.27
     volumeMounts:
       - name: gcr-creds
         mountPath: /secret
