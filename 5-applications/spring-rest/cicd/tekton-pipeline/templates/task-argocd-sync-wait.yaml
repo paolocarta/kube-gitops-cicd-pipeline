@@ -17,14 +17,15 @@ spec:
     envFrom:
       - configMapRef:
           name: argocd-env-configmap  # used for server address
-      - secretRef:
-          name: argocd-env-secret  # used for authentication 
+      # - secretRef:
+      #     name: argocd-env-secret  # used for authentication 
   steps:
     - name: sync
       image: argoproj/argocd:$(params.argocd-version)
       script: |
-        argocd app sync $(params.application-name) --revision $(params.revision) $(params.flags) --server $ARGOCD_SERVER --loglevel debug --auth-token $ARGOCD_AUTH_TOKEN
+        argocd app sync $(params.application-name) --revision $(params.revision) $(params.flags) --server $ARGOCD_SERVER --loglevel debug --insecure
+        # argocd app sync $(params.application-name) --revision $(params.revision) $(params.flags) --server $ARGOCD_SERVER --loglevel debug --auth-token $ARGOCD_AUTH_TOKEN
     - name: wait
       image: argoproj/argocd:$(params.argocd-version)      
       script: |
-        argocd app wait $(params.application-name) --health $(params.flags) --server $ARGOCD_SERVER --loglevel debug --auth-token $ARGOCD_AUTH_TOKEN
+        argocd app wait $(params.application-name) --health $(params.flags) --server $ARGOCD_SERVER --loglevel debug
