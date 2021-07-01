@@ -18,7 +18,7 @@ patchesStrategicMerge:
 
 images:
 - name: eu.gcr.io/kube-bootcamp-pc/basic-spring-boot
-  newTag: 1.2.37
+  newTag: 1.2.38
 
 resources:
 - ../../base
