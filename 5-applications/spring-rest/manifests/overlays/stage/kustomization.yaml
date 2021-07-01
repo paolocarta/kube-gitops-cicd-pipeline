@@ -17,6 +17,8 @@ patchesStrategicMerge:
 - replica-and-rollout-strategy.yaml
 
 images:
+- name: eu.gcr.io/kube-bootcamp-pc/basic-spring-boot
+  newTag: 1.2.27
 - name: image-registry.openshift-image-registry.svc:5000/developerteam1-cicd/basic-spring-boot
   newTag: 1.2.26
 
