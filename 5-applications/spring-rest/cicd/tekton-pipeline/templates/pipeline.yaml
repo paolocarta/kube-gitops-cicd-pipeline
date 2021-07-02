@@ -49,6 +49,7 @@ spec:
     params:
     - name: image-tag
       value: "$(tasks.maven-and-image-build.results.image-tag)"
+    workspaces:
     - name: output-area
       workspace: exchange-area
   ####
