@@ -18,7 +18,8 @@ spec:
     - name: kanikoImage
       description: "Kaniko image"
       type: string
-      default: "gcr.io/kaniko-project/executor:v1.5.2@sha256:e61c08a27311884ff0d39a3ed4467f3c23444d73e03387fc9c7d5c6442796bae"
+      default: "gcr.io/kaniko-project/executor:debug"
+      # default: "gcr.io/kaniko-project/executor:v1.5.2@sha256:e61c08a27311884ff0d39a3ed4467f3c23444d73e03387fc9c7d5c6442796bae"
     - name: kanikoBuildArgs
       description: "Kaniko build arguments (default: none)"
       # type: array
@@ -112,7 +113,7 @@ spec:
       - --dockerfile=$(params.dockerfilePath)
       - --context=$(params.kanikoContextPath)
         # - --destination=$(resources.outputs.image.url)
-      - --destination=eu.gcr.io/kube-bootcamp-pc/basic-spring-boot:1.2.39
+      - --destination=eu.gcr.io/kube-bootcamp-pc/basic-spring-boot:1.2.40
     volumeMounts:
       - name: gcr-creds
         mountPath: /secret
