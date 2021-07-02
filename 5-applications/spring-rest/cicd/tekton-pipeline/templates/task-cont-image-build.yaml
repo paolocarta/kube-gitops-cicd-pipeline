@@ -43,9 +43,8 @@ spec:
       - name: image
         type: image
 
-    workspaces:
-    - name: output-area
-      workspace: exchange-area
+  workspaces:
+  - name: output-area
 
   steps:
   - name: debug
