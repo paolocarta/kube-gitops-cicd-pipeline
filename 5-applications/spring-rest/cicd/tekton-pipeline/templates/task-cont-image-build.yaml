@@ -60,6 +60,15 @@ spec:
     script: |
       ls -l /workspace
 
+  - name: tag-git-repo
+    image: clamer/kikd:1.0.3
+    imagePullPolicy: IfNotPresent
+    workingDir: /workspace/source
+    command: ["/bin/bash"]
+    args:
+      - -c
+      - git tag $(cat /workspace/output-area/version)
+
   - name: build-and-push
     image: $(params.kanikoImage)
     workingDir: $(resources.inputs.source.path)

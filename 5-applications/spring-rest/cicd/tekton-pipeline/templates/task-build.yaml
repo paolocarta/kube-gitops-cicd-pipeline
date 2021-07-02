@@ -63,26 +63,26 @@ spec:
     - -Dmaven.repo.local=$(workspaces.maven-repo.path)
     - "$(inputs.params.GOALS)"
 
-  - name: make-upload-dir
-    image: quay.io/openshift-pipeline/openshift-cli:v0.8.0
-    command: ["mkdir"]
-    args:
-      - -p
-      - /workspace/source/upload
+  # - name: make-upload-dir
+  #   image: quay.io/openshift-pipeline/openshift-cli:v0.8.0
+  #   command: ["mkdir"]
+  #   args:
+  #     - -p
+  #     - /workspace/source/upload
 
-  - name: copy-assets 
-    image: quay.io/openshift-pipeline/openshift-cli:v0.8.0
-    command: ["cp"]
-    args:
-      - /workspace/source/target/shift-rest-1.0.0-SNAPSHOT.jar
-      - /workspace/source/upload 
+  # - name: copy-assets 
+  #   image: quay.io/openshift-pipeline/openshift-cli:v0.8.0
+  #   command: ["cp"]
+  #   args:
+  #     - /workspace/source/target/shift-rest-1.0.0-SNAPSHOT.jar
+  #     - /workspace/source/upload 
 
-  - name: copy-assets-2
-    image: quay.io/openshift-pipeline/openshift-cli:v0.8.0
-    command: ["cp"]
-    args:
-      - /workspace/source/Dockerfile
-      - /workspace/source/upload
+  # - name: copy-assets-2
+  #   image: quay.io/openshift-pipeline/openshift-cli:v0.8.0
+  #   command: ["cp"]
+  #   args:
+  #     - /workspace/source/Dockerfile
+  #     - /workspace/source/upload
 
   - name: new-version
     image: clamer/kikd:1.0.3
@@ -92,12 +92,3 @@ spec:
       cp -r /tekton/home/.ssh /root/.ssh
       jx-release-version | tee $(results.image-tag.path)
       git fetch --tags && jx-release-version > /workspace/output-area/version
-
-  - name: tag-git-repo
-    image: clamer/kikd:1.0.3
-    imagePullPolicy: IfNotPresent
-    workingDir: /workspace/source
-    command: ["/bin/bash"]
-    args:
-      - -c
-      - git tag $(cat /workspace/output-area/version)
