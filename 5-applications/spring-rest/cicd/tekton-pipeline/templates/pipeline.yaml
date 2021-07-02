@@ -42,6 +42,7 @@ spec:
       inputs:
       - name: source
         resource: {{ include "springboot-tekton.fullname" . }}-source
+        from: [maven-and-image-build]
       outputs:
       - name: image
         resource: {{ include "springboot-tekton.fullname" . }}-image
