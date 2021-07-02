@@ -27,13 +27,27 @@ spec:
       - name: source
         resource: {{ include "springboot-tekton.fullname" . }}-source
       outputs:
-      - name: image
-        resource: {{ include "springboot-tekton.fullname" . }}-image
+      - name: source
+        resource: {{ include "springboot-tekton.fullname" . }}-source
     workspaces:
     - name: maven-repo
       workspace: local-maven-repo
     - name: output-area
       workspace: exchange-area
+  ####
+  - name: cont-image-build
+    taskRef: 
+      name: cont-image-build
+    resources:
+      inputs:
+      - name: source
+        resource: {{ include "springboot-tekton.fullname" . }}-source
+      outputs:
+      - name: image
+        resource: {{ include "springboot-tekton.fullname" . }}-image
+    params:
+    - name: image-tag
+      value: "$(tasks.maven-and-image-build.results.image-tag)"
   ####
   - name: deploy-to-stage
     taskRef:
