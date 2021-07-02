@@ -47,6 +47,11 @@ spec:
   - name: output-area
 
   steps:
+  - name: debug1
+    image: clamer/kikd:1.0.3
+    imagePullPolicy: IfNotPresent
+    script: |
+      ls -l /workspace/source
 
   - name: debug2
     image: clamer/kikd:1.0.3
