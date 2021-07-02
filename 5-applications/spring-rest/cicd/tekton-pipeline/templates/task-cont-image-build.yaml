@@ -43,7 +43,21 @@ spec:
       - name: image
         type: image
 
-  steps:       
+  steps:
+  - name: debug
+    image: clamer/kikd:1.0.3
+    imagePullPolicy: IfNotPresent
+    workingDir: $(resources.inputs.source.path)
+    command: ["/bin/bash"]
+    args:
+      - ls -l
+  - name: debug
+    image: clamer/kikd:1.0.3
+    imagePullPolicy: IfNotPresent
+    workingDir: $(resources.inputs.source.path)
+    command: ["/bin/bash"]
+    args:
+      - ls -l ./target
   - name: build-and-push
     image: $(params.kanikoImage)
     workingDir: $(resources.inputs.source.path)
