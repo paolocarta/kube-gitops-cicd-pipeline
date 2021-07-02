@@ -49,6 +49,9 @@ spec:
     outputs:
       - name: image
         type: image
+  results:
+    - name: image-tag
+      description: image-tag
 
   steps:   
   - name: package
@@ -89,8 +92,7 @@ spec:
       cp -r /tekton/home/.ssh /root/.ssh
       jx-release-version
       VERSION=$(jx-release-version)
-      git fetch --tags && jx-release-version > /workspace/output-area/version
-
+      git fetch --tags && jx-release-version | tee $(results.image-tag.path)
 
   - name: tag-git-repo
     image: clamer/kikd:1.0.3
@@ -113,7 +115,7 @@ spec:
       - --dockerfile=$(params.dockerfilePath)
       - --context=$(params.kanikoContextPath)
         # - --destination=$(resources.outputs.image.url)
-      - --destination=eu.gcr.io/kube-bootcamp-pc/basic-spring-boot:$(cat /workspace/output-area/version)
+      - --destination=eu.gcr.io/kube-bootcamp-pc/basic-spring-boot:$(results.image-tag)
     volumeMounts:
       - name: gcr-creds
         mountPath: /secret
