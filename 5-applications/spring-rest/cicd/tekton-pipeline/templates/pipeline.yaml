@@ -39,10 +39,10 @@ spec:
     taskRef: 
       name: cont-image-build
     resources:
-      inputs:
-      - name: source
-        resource: {{ include "springboot-tekton.fullname" . }}-source
-        from: [maven-and-image-build]
+      # inputs:
+      # - name: source
+      #   resource: {{ include "springboot-tekton.fullname" . }}-source
+      #   # from: [maven-and-image-build]
       outputs:
       - name: image
         resource: {{ include "springboot-tekton.fullname" . }}-image

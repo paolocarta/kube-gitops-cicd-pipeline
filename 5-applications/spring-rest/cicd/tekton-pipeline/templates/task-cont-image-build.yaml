@@ -36,9 +36,9 @@ spec:
       type: string
 
   resources:
-    inputs:
-      - name: source
-        type: git
+    # inputs:
+    #   - name: source
+    #     type: git
     outputs:
       - name: image
         type: image
@@ -53,6 +53,13 @@ spec:
     workingDir: $(resources.inputs.source.path)
     script: |
       ls -l
+
+  - name: debug2
+    image: clamer/kikd:1.0.3
+    imagePullPolicy: IfNotPresent
+    workingDir: $(resources.inputs.source.path)
+    script: |
+      ls -l /workspace/output-area
 
   - name: debug3
     image: clamer/kikd:1.0.3
@@ -71,7 +78,7 @@ spec:
 
   - name: build-and-push
     image: $(params.kanikoImage)
-    workingDir: $(resources.inputs.source.path)
+    workingDir: /workspace/output-area
     env:
       - name: GOOGLE_APPLICATION_CREDENTIALS
         value: /secret/kaniko-secret.json
