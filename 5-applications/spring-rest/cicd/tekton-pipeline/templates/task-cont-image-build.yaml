@@ -48,16 +48,17 @@ spec:
     image: clamer/kikd:1.0.3
     imagePullPolicy: IfNotPresent
     workingDir: $(resources.inputs.source.path)
-    command: ["/bin/bash"]
-    args:
-      - ls -l
+    script: |
+      ls -l
+
   - name: debug2
     image: clamer/kikd:1.0.3
     imagePullPolicy: IfNotPresent
     workingDir: $(resources.inputs.source.path)
     command: ["/bin/bash"]
-    args:
-      - ls -l ./target
+    script: |
+      ls -l ./target
+
   - name: build-and-push
     image: $(params.kanikoImage)
     workingDir: $(resources.inputs.source.path)
