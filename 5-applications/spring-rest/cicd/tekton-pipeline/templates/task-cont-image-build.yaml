@@ -47,16 +47,22 @@ spec:
   - name: debug
     image: clamer/kikd:1.0.3
     imagePullPolicy: IfNotPresent
-    workingDir: $(resources.inputs.source.path)
+    workingDir: /workspace/source
     script: |
       ls -l
 
   - name: debug2
     image: clamer/kikd:1.0.3
     imagePullPolicy: IfNotPresent
-    workingDir: $(resources.inputs.source.path)
+    workingDir: /workspace/source
     script: |
       ls -l ./target
+
+  - name: debug3
+    image: clamer/kikd:1.0.3
+    imagePullPolicy: IfNotPresent
+    script: |
+      ls -l /workspace/source/upload
 
   - name: build-and-push
     image: $(params.kanikoImage)
