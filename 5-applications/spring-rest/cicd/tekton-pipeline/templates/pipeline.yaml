@@ -49,6 +49,8 @@ spec:
     params:
     - name: image-tag
       value: "$(tasks.maven-and-image-build.results.image-tag)"
+    - name: output-area
+      workspace: exchange-area
   ####
   - name: deploy-to-stage
     taskRef:

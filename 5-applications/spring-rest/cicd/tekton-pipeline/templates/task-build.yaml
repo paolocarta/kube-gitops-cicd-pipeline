@@ -63,13 +63,6 @@ spec:
     - -Dmaven.repo.local=$(workspaces.maven-repo.path)
     - "$(inputs.params.GOALS)"
 
-  - name: debug2
-    image: clamer/kikd:1.0.3
-    imagePullPolicy: IfNotPresent
-    workingDir: /workspace/source
-    script: |
-      ls -l ./target
-
   - name: make-upload-dir
     image: quay.io/openshift-pipeline/openshift-cli:v0.8.0
     command: ["mkdir"]

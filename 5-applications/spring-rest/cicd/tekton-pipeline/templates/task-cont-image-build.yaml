@@ -43,11 +43,15 @@ spec:
       - name: image
         type: image
 
+    workspaces:
+    - name: output-area
+      workspace: exchange-area
+
   steps:
   - name: debug
     image: clamer/kikd:1.0.3
     imagePullPolicy: IfNotPresent
-    workingDir: /workspace/source
+    workingDir: $(resources.inputs.source.path)
     script: |
       ls -l
 
