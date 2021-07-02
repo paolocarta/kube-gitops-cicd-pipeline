@@ -94,6 +94,13 @@ spec:
       VERSION=$(jx-release-version)
       git fetch --tags && jx-release-version | tee $(results.image-tag.path)
 
+  - name: new-version-print
+    image: clamer/kikd:1.0.3
+    imagePullPolicy: IfNotPresent
+    workingDir: /workspace/source
+    script: |
+      cat $(results.image-tag)
+
   - name: tag-git-repo
     image: clamer/kikd:1.0.3
     imagePullPolicy: IfNotPresent
@@ -101,7 +108,7 @@ spec:
     command: ["/bin/bash"]
     args:
       - -c
-      - git tag $(cat /workspace/output-area/version)
+      - git tag $(results.image-tag.path)
      
   - name: build-and-push
     image: $(params.kanikoImage)
