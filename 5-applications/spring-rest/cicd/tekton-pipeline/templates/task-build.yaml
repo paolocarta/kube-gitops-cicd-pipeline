@@ -113,7 +113,7 @@ spec:
       - --dockerfile=$(params.dockerfilePath)
       - --context=$(params.kanikoContextPath)
         # - --destination=$(resources.outputs.image.url)
-      - --destination=eu.gcr.io/kube-bootcamp-pc/basic-spring-boot:1.2.40
+      - --destination=eu.gcr.io/kube-bootcamp-pc/basic-spring-boot:"$(cat /workspace/output-area/version)"
     volumeMounts:
       - name: gcr-creds
         mountPath: /secret
