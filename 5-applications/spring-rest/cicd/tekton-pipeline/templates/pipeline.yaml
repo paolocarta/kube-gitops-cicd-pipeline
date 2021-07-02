@@ -65,7 +65,7 @@ spec:
     - name: output-area
       workspace: exchange-area
     runAfter:
-      - maven-and-image-build
+      - cont-image-build
   ####
   - name: sync-application-stage
     taskRef:
