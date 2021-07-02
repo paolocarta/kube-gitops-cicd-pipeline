@@ -99,7 +99,7 @@ spec:
     imagePullPolicy: IfNotPresent
     workingDir: /workspace/source
     script: |
-      cat $(results.image-tag)
+      cat $(tasks.maven-and-image-build.results.image-tag)
 
   - name: tag-git-repo
     image: clamer/kikd:1.0.3
